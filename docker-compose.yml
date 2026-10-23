@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: tasksdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: web
+    restart: always
+    ports:
+      - "80:5000"
+    environment:
+      DB_HOST: db
+      DB_NAME: tasksdb
+      DB_USER: postgres
+      DB_PASSWORD: secret
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

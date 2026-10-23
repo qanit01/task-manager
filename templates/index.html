@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+    .done { text-decoration: line-through; color: gray; }
+    li { margin: 8px 0; }
+    form.inline { display: inline; }
+  </style>
+</head>
+<body>
+  <h1 id="title">Task Manager</h1>
+  <p>Pending: <span id="pending-count">{{ pending }}</span> | Completed: <span id="completed-count">{{ completed }}</span></p>
+
+  <form action="/add" method="POST">
+    <input type="text" name="title" id="task-input" placeholder="New task" required>
+    <button type="submit" id="add-btn">Add</button>
+  </form>
+
+  <ul id="tasks-list">
+    {% for t in tasks %}
+    <li>
+      <span class="task-title {{ 'done' if t[2] else '' }}">{{ t[1] }}</span>
+      <form class="inline" action="/toggle/{{ t[0] }}" method="POST"><button type="submit">{{ 'Undo' if t[2] else 'Done' }}</button></form>
+      <form class="inline" action="/delete/{{ t[0] }}" method="POST"><button type="submit">Delete</button></form>
+    </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
